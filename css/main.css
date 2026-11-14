@@ -1,0 +1,59 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background: #080D13;
+    color: #DCE7ED;
+    font-family: 'consolas', sans-serif;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#game {
+    width:90%;
+    max-width: 900px;
+    min-height: 500px;
+    border: 1px solid #334653;
+    background: #101923;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 25px;
+    text-align: center;
+    padding: 40px;
+}
+
+h1 {
+    font-size: clamp(30px, 6vw, 64px);
+    letter-spacing: 8px;
+    color: #DCE7ED;
+}
+
+p {
+    color: #E9B45D;
+    letter-spacing: 4px;
+    font-size: 13px;
+}
+
+button {
+    background: transparent;
+    border: 1px solid #7DE0AD;
+    color: #7DE0AD;
+    padding: 15px 35px;
+    font-family: inherit;
+    letter-spacing: 3px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+button:hover {
+    background: #7DE0AD;
+    color: #080D13;
+}
+
