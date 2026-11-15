@@ -5,55 +5,191 @@
 }
 
 body {
-    background: #080D13;
-    color: #DCE7ED;
+    background: #080812;
+    color: #e3dbea;
     font-family: 'consolas', sans-serif;
     min-height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    overflow: hidden;
 }
 
 #game {
-    width:90%;
-    max-width: 900px;
-    min-height: 500px;
-    border: 1px solid #334653;
-    background: #101923;
+    min-height: 100vh;
+    width: 100%;
+    position: relative;
     display: flex;
     flex-direction: column;
+    align-items: center;
+    padding: 9vh 8%;
+
+    background-image:
+        linear-gradient(rgba(5, 5, 15, 0.15), rgba(5, 5, 15, 0.35)),
+        url("../assets/background/space-background.png");
+
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.menu-title {
+    margin-bottom: 3vh 0 0 15%;
+    animation: appear 1.2s ease-out;
+    text-align: center;
+}
+
+.menu-title span {
+    display: block;
+    color: #a99ab9;
+    font-size: 12px;
+    letter-spacing: 5px;
+    margin-bottom: 10px;
+}
+
+.menu-title h1 {
+    font-size: clamp(42px, 7vw, 82px);
+    line-height: 0.95;
+    letter-spacing: 5px;
+    text-shadow:
+        4px 4px #292039,
+        6px 6px #100d19;
+}
+
+.menu-title p {
+    margin-top: 22px;
+    font-size: 12px;
+    color: #c2a8ce;
+}
+
+@keyframes appear {
+    from {
+        opacity: 0;
+        transform: translateY(12px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.menu-options {
+    display: flex;
+    flex-direction: column;
+    gap: 13px;
+    align-self: center;
+    margin-top: 8vh;
+    width: 290px;
+}
+
+.menu-button {
+    width: 100%;
+    text-align: center;
+    padding: 13px 20px;
+    background: rgba(24, 20, 39, 0.88);
+    border: 2px solid #746383;
+    color: #e3dbea;
+    font-family: 'consolas', sans-serif;
+    font-size: 15px;
+    letter-spacing: 2px;
+    cursor: pointer;
+    transition: 0.2s
+}
+
+.menu-button:hover {
+    background: rgba(91, 65, 116, 0.9);
+    border-color: #c5a6dc;
+    color: #ffffff;
+    box-shadow: 0 0 12px rgba(155, 112, 190, 0.25);
+    transform: scale(1.025);
+}
+
+.menu-button:active {
+    transform: scale(0.98);
+}
+
+.menu-button:focus-visible {
+    outline: 2px solid #e3dbea;
+    outline-offset: 4px;
+}
+
+.transmission-status {
+    position: absolute;
+    bottom: 22px;
+    left: 25px;
+    font-size: 10px;
+    letter-spacing: 2px;
+    color: #9c91a9;
+}
+
+.status-light {
+    display: inline-block;
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #8cbd9b;
+    margin-right: 8px;
+    box-shadow: 0 0 7px #8cbd9b;
+}
+
+
+.hidden {
+    display: none !important;
+}
+
+#intro-screen{
+    position: fixed;
+    inset: 0;
+    z-index: 10;
+    display: flex;
     justify-content: center;
     align-items: center;
-    gap: 25px;
+    padding: 25px;
+    background: rgba(5, 5, 13, 0.88);
+}
+
+.intro-panel {
+    width: min(650px, 95%);
+    padding: 45px;
+    background: #11101d;
+    border: 2px solid #746383;
+    box-shadow: 0 0 35px rgba(100, 70, 130, 0.2);
     text-align: center;
-    padding: 40px;
+    animation: appear 0.8s ease-out;
 }
 
-h1 {
-    font-size: clamp(30px, 6vw, 64px);
-    letter-spacing: 8px;
-    color: #DCE7ED;
-}
-
-p {
-    color: #E9B45D;
+.intro-label {
+    color: #a99ab9;
+    font-size: 11px;
     letter-spacing: 4px;
-    font-size: 13px;
 }
 
-button {
-    background: transparent;
-    border: 1px solid #7DE0AD;
-    color: #7DE0AD;
-    padding: 15px 35px;
-    font-family: inherit;
+.intro-panel h2 {
+    margin: 20px 0 12px;
+    font-size: clamp(24px, 4vw, 38px);
+    color: #e3dbea;
     letter-spacing: 3px;
-    cursor: pointer;
-    transition: 0.3s;
 }
 
-button:hover {
-    background: #7DE0AD;
-    color: #080D13;
+.intro-date {
+    font-size: 11px;
+    color: #91839e;
+    letter-spacing: 2px;
 }
 
+.intro-divider {
+    margin: 28px 0;
+    height: 1px;
+    background: #514260;
+}
+
+.intro-text {
+    font-size: 14px;
+    color: #d0c6d8;
+    line-height: 2.2;
+    white-space: pre-line;
+}
+
+.intro-warning {
+    margin: 30px 0;
+    font-size: 11px;
+    color: #c87983;
+    letter-spacing: 2px;
+}

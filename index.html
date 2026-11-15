@@ -10,9 +10,49 @@
 <body>
 
     <div id="game">
-        <h1>THE LAST TELEMETRY</h1>
-        <p>INCIDENT 001: CASCADE</p>
-        <button id="startButton">start simulation</button>
+        <div class="menu-title">
+            <span>NO SIGNAL studio</span>
+            <h1>THE LAST<br>TELEMETRY</h1>
+            <p>INCIDENT 001: CASCADE</p>
+        </div>
+
+        <div class="menu-options">
+            <button id="startButton" class="menu-button">▶ START MISSION</button>
+            <button class="menu-button">CONTINUE</button>
+            <button class="menu-button">OPTIONS</button>
+            <button class="menu-button">CREDITS</button>
+        </div>
+
+        <div class="transmission-status">
+            <span class="status-light"></span>
+            SYSTEM ONLINE - WAITING FOR INPUT
+        </div>
+    </div>
+
+    <div id="intro-screen" class="hidden">
+        <div class="intro-panel">
+            <span class="intro-label">MISION ARCHIVE // 001</span>
+
+            <h2>THE CASCADE INCIDENT</h2>
+
+            <p class="intro-date">LUNAR RESEARCH PROGRAM - 2089</p>
+
+            <div class="intro-di"></div>
+
+            <p class="intro-text">
+                A routine mission.
+                A stable orbit.
+                Four crew members.
+
+                Until the telemetry stopped making sense.
+            </p>
+
+            <p class="intro-warning">
+                WARNING: UNEXPECTED SYSTEM ANOMALY DETECTED
+            </p>
+
+            <div id="continueButton" class="menu-button">CONTINUE ▶</div>
+        </div>
     </div>
 
     <script src="js/gameState.js"></script>
