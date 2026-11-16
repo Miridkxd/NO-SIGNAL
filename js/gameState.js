@@ -17,29 +17,30 @@ const GameState = {
             name: "Elena Voss",
             role: "Commander",
             condition: "stable",
-            stress: 20
+            stress: 20,
+            trust: 50
         },
-
         marcus: {
             name: "Marcus Chen",
             role: "Flight Engineer",
             condition: "stable",
-            stress: 35
+            stress: 35,
+            trust: 50
         },
-
         amara: {
             name: "Amara Okafor",
             role: "Systems Scientist",
             condition: "stable",
-            stress: 15
+            stress: 15,
+            trust: 50
         },
-
         daniel: {
             name: "Daniel Reyes",
             role: "Medical Officer",
             condition: "stable",
-            stress: 10
-        }
+            stress: 10,
+            trust: 50
+        }                           
     },
 
     decisions: [],
@@ -47,8 +48,9 @@ const GameState = {
     flags: {
         electricalSystemChecked: false,
         environmentalReadingsChecked: false,
-        secondaryCircuitIsolated: false
-    }
+        secondaryCircuitIsolated: false,
+        secondaryCircuitRepaired: false
+}
 };
 
 function updateResource(resource, amount) {
@@ -61,6 +63,10 @@ function updateResource(resource, amount) {
         0,
         Math.min(100, GameState.resources[resource] + amount)
     );
+
+    if (typeof checkCriticalMissionState === "function") {
+    checkCriticalMissionState();
+    }
 }
 
 function recordDecision(decision) {

@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,6 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>THE LAST TELEMETRY</title>
     <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/cockpit.css">
+    <link rel="stylesheet" href="css/ship-status.css">
+    <link rel="stylesheet" href="css/crew.css">
+    <link rel="stylesheet" href="css/communications.css">
+    <link rel="stylesheet" href="css/exploration.css">
 </head>
 <body>
 
@@ -18,9 +22,9 @@
 
         <div class="menu-options">
             <button id="startButton" class="menu-button">▶ START MISSION</button>
-            <button class="menu-button">CONTINUE</button>
+            <button id="menuContinueButton" class="menu-button">CONTINUE</button>
             <button class="menu-button">OPTIONS</button>
-            <button class="menu-button">CREDITS</button>
+            <button id="creditsButton" class="menu-button">CREDITS</button>
         </div>
 
         <div class="transmission-status">
@@ -51,9 +55,862 @@
                 WARNING: UNEXPECTED SYSTEM ANOMALY DETECTED
             </p>
 
-            <div id="continueButton" class="menu-button">CONTINUE ▶</div>
+            <button id="continueButton" class="menu-button">CONTINUE ▶</button>
         </div>
     </div>
+
+    
+    <div id="cockpit-screen" class="hidden">
+
+        <!-- TOP NAVIGATION -->
+        <header class="cockpit-nav">
+            <div class="nav-logo">THE LAST TELEMETRY</div>
+
+            <nav>
+                <button class="nav-button active" data-panel="cockpit">COCKPIT</button>
+                <button class="nav-button" data-panel="status">SHIP STATUS</button>
+                <button class="nav-button" data-panel="crew">CREW</button>
+                <button class="nav-button" data-panel="communications">COMMUNICATIONS</button>
+                <button class="nav-button" data-panel="diagnostics">DIAGNOSTICS</button>
+                <button class="nav-button" data-panel="logs">LOGS</button>
+            </nav>
+
+            <div class="mission-timer">
+                <span>CRITICAL WINDOW</span>
+                <strong id="missionTimer">18:00</strong>
+            </div>
+        </header>
+
+        <!-- MAIN COCKPIT -->
+        <main class="cockpit-main">
+
+            <!-- SHIP STATUS -->
+            <aside class="ship-status-panel">
+                <h3>SHIP STATUS</h3>
+
+                <div class="status-item">
+                    <span>ENERGY</span>
+                    <strong id="energyValue">87%</strong>
+                </div>
+
+                <div class="status-item">
+                    <span>OXYGEN</span>
+                    <strong id="oxygenValue">96%</strong>
+                </div>
+
+                <div class="status-item">
+                    <span>PRESSURE</span>
+                    <strong id="pressureValue">101 kPa</strong>
+                </div>
+
+                <div class="status-item">
+                    <span>TEMPERATURE</span>
+                    <strong id="temperatureValue">22 °C</strong>
+                </div>
+            </aside>
+
+            <!-- VIEWPORT -->
+            <section class="cockpit-viewport">
+                <video
+                    id="cockpitVideo"
+                    class="cockpit-background-video"
+                    autoplay
+                    muted
+                    playsinline
+                    preload="auto"
+                    >
+                    <source src="assets/background/orion-reentry.mp4" type="video/mp4">
+                </video>
+                <div class="flight-data">
+                    <span>MISSION: LUNAR-01</span>
+                    <span>PHASE: LUNAR APPROACH</span>
+                    <span>HEADING: 276.4°</span>
+                </div>
+            </section>
+
+            <!-- ALERTS AND CREW -->
+            <aside class="cockpit-side-panel">
+
+                <button id="alertsButton" class="cockpit-control">
+                    ALERTS — 1
+                </button>
+
+                <button id="crewButton" class="cockpit-control">
+                    CREW
+                </button>
+
+                <button id="communicationsButton" class="cockpit-control">
+                    COMMUNICATIONS
+                </button>
+
+            </aside>
+
+            <!-- PHYSICAL CONTROL CONSOLE -->
+            <section class="control-console">
+
+                <button class="console-button" data-system="electrical">
+                    ELECTRICAL
+                </button>
+
+                <button class="console-button" data-system="life-support">
+                    LIFE SUPPORT
+                </button>
+
+                <button class="console-button" data-system="navigation">
+                    NAVIGATION
+                </button>
+
+                <button class="console-button" data-system="thermal">
+                    THERMAL
+                </button>
+
+                <button id="shipInteriorButton" class="console-button">
+                    SHIP INTERIOR
+                </button>
+
+            </section>
+        </main>
+
+        <!-- SUBTITLES -->
+        <footer class="subtitle-panel">
+            <span id="speakerName">GROUND CONTROL</span>
+            <p id="subtitleText">
+            Lunar-01, this is Mission Control. We are monitoring your approach.
+            </p>
+        </footer>
+
+        <!-- COCKPIT INTRODUCTION MODAL -->
+        <div id="cockpit-intro-modal" class="hidden">
+
+            <div class="cockpit-intro-panel">
+
+                <div class="modal-header">
+                    <span>THE LAST TELEMETRY</span>
+                    <span>MISSION BRIEFING // 001</span>
+                </div>
+
+                <h2>WELCOME TO THE COMMAND DECK</h2>
+
+                <p>
+                    This is the main control interface of Lunar-01.
+                    From here, you will monitor the spacecraft,
+                    coordinate your crew and investigate system anomalies.
+                </p>
+
+                <div class="modal-section">
+                    <h3>FLIGHT SYSTEMS</h3>
+                    <p>
+                        Monitor electrical power, life support,
+                        navigation and thermal regulation.
+                        Each system provides information about the
+                        current condition of your spacecraft.
+                    </p>
+                </div>
+
+                <div class="modal-section">
+                    <h3>CREW & COMMUNICATIONS</h3>
+                    <p>
+                        Consult your crew, receive instructions
+                        from Ground Control and review incoming transmissions.
+                    </p>
+                </div>
+
+                <div class="modal-warning">
+                    <h3>⚠ CRITICAL RESPONSE WINDOW</h3>
+                    <p>
+                        A secondary electrical anomaly has been detected.
+                        You have a limited response window to stabilize
+                        the affected system before redundancy is compromised.
+                    </p>
+
+                    <strong>18:00 MINUTES</strong>
+                </div>
+
+                <p class="modal-footer-text">
+                    Mission time begins when you confirm.
+                    Every decision may affect the mission.
+                </p>
+
+                 <button id="beginMissionButton" class="menu-button">
+                    BEGIN MISSION ▶
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <!-- ALERTS INTERFACE -->
+        <section id="alerts-screen" class="interface-panel hidden">
+
+            <div class="interface-header">
+                <span>WARNING CENTER // LUNAR-01</span>
+                <button id="closeAlertsButton" class="close-interface">
+                    BACK TO COCKPIT
+                </button>
+            </div>
+
+            <h2>ACTIVE ALERTS</h2>
+
+            <article class="system-card electrical-alert">
+                <span class="system-state warning">CRITICAL WARNING // 001</span>
+                <h3>SECONDARY ELECTRICAL BUS</h3>
+                <strong>VOLTAGE FLUCTUATION DETECTED</strong>
+
+                <p>
+                    Irregular voltage variations detected in the secondary
+                    electrical distribution system.
+                </p>
+
+                <p>
+                    Environmental sensor readings do not match independent
+                    measurements. Further investigation is required.
+                </p>
+
+                <span class="system-state warning">
+                    STATUS: UNRESOLVED
+                </span>
+
+                <button id="acknowledgeAlertButton" class="comm-response">
+                    ACKNOWLEDGE ALERT
+                </button>
+            </article>
+
+        </section>
+
+        
+        <!-- ELECTRICAL SYSTEM INTERFACE -->
+        <section id="electrical-screen" class="interface-panel hidden">
+
+    <div class="interface-header">
+        <span>ELECTRICAL SYSTEMS // LUNAR-01</span>
+        <button id="closeElectricalButton" class="close-interface">
+            BACK TO COCKPIT
+        </button>
+    </div>
+
+    <h2>POWER DISTRIBUTION SYSTEM</h2>
+
+    <div class="systems-grid">
+
+        <article class="system-card">
+            <h3>PRIMARY POWER BUS</h3>
+            <strong>NOMINAL</strong>
+            <p>Primary electrical distribution operating normally.</p>
+            <span class="system-state">STABLE</span>
+        </article>
+
+        <article class="system-card electrical-alert">
+            <h3>SECONDARY POWER BUS</h3>
+            <strong id="secondaryBusStatus">FLUCTUATING</strong>
+            <p>Irregular voltage variations detected.</p>
+            <span id="secondaryBusState" class="system-state warning">
+                INVESTIGATION REQUIRED
+            </span>
+        </article>
+
+    </div>
+
+    <article class="system-card">
+        <h3>SYSTEM ANALYSIS</h3>
+
+        <p id="electricalAnalysis">
+            Secondary bus voltage is unstable.
+            The source of the anomaly has not yet been identified.
+            Further investigation is recommended.
+        </p>
+
+        <div class="electrical-actions">
+            <button id="inspectCircuitButton" class="comm-response">
+                INSPECT CIRCUIT
+            </button>
+
+            <button id="isolateCircuitButton" class="comm-response">
+                ISOLATE SECONDARY BUS
+            </button>
+        </div>
+
+        <p id="electricalFeedback"></p>
+    </article>
+
+        </section>
+
+        <!-- LIFE SUPPORT PANEL -->
+        <section id="life-support-screen" class="interface-panel hidden">
+
+            <div class="interface-header">
+                <span>LIFE SUPPORT SYSTEMS // LUNAR-01</span>
+                <button id="closeLifeSupportButton" class="close-interface">
+                    BACK TO COCKPIT
+                </button>
+            </div>
+
+            <h2>ENVIRONMENTAL CONTROL</h2>
+
+            <div class="systems-grid">
+
+                <article class="system-card">
+                    <h3>OXYGEN LEVEL</h3>
+                    <strong id="lifeOxygenValue">96%</strong>
+                    <p>Cabin oxygen concentration.</p>
+                    <span class="system-state">NOMINAL</span>
+                </article>
+
+                <article class="system-card">
+                    <h3>CABIN PRESSURE</h3>
+                    <strong id="lifePressureValue">101 kPa</strong>
+                    <p>Internal cabin pressure.</p>
+                    <span class="system-state">STABLE</span>
+                </article>
+
+                <article class="system-card">
+                    <h3>CABIN TEMPERATURE</h3>
+                    <strong id="lifeTemperatureValue">22 °C</strong>
+                    <p>Internal temperature.</p>
+                    <span class="system-state">NOMINAL</span>
+                </article>
+
+            </div>
+
+            <article class="system-card">
+                <h3>ENVIRONMENTAL SENSOR ANALYSIS</h3>
+
+                <p>
+                    Primary and redundant environmental sensors are reporting
+                    inconsistent values. Current readings remain within
+                    operational limits, but their accuracy cannot be confirmed.
+                </p>
+
+                <p id="lifeSupportAnalysis">
+                    Sensor verification pending. Independent measurements
+                    are required before making environmental adjustments.
+                </p>
+
+                <div class="electrical-actions">
+                    <button id="verifySensorsButton" class="comm-response">
+                     VERIFY SENSOR READINGS
+                    </button>
+
+                    <button id="adjustEnvironmentButton" class="comm-response">
+                        MANUAL ENVIRONMENTAL ADJUSTMENT
+                    </button>
+                </div>
+
+                <p id="lifeSupportFeedback"></p>
+            </article>
+
+        </section>
+
+        <!-- SHIP STATUS PANEL -->
+        <section id="ship-status-screen" class="interface-panel hidden">
+            <div class="interface-header">
+                <span>FLIGHT SYSTEMS // 001</span>
+                <button class="close-interface">BACK TO COCKPIT</button>
+            </div>
+
+            <h2>SPACECRAFT STATUS</h2>
+
+            <div class="systems-grid">
+
+                <article class="system-card">
+                    <h3>ELECTRICAL POWER</h3>
+                    <strong id="statusPower">87%</strong>
+                    <p>Primary power distribution</p>
+                    <span class="system-state">NOMINAL</span>
+                </article>
+
+                <article class="system-card">
+                    <h3>LIFE SUPPORT</h3>
+                    <strong id="statusOxygen">96%</strong>
+                    <p>Atmospheric oxygen reserve</p>
+                    <span class="system-state">NOMINAL</span>
+                </article>
+
+                <article class="system-card">
+                    <h3>CABIN PRESSURE</h3>
+                    <strong id="statusPressure">100%</strong>
+                    <p>Cabin pressure monitoring</p>
+                    <span class="system-state">NOMINAL</span>
+                </article>
+
+                <article class="system-card">
+                    <h3>THERMAL CONTROL</h3>
+                    <strong id="statusTemperature">22 °C</strong>
+                    <p>Cabin temperature</p>
+                    <span class="system-state">NOMINAL</span>
+                </article>
+
+            </div>
+
+            <div class="system-card electrical-alert">
+                <h3>ACTIVE ANOMALY</h3>
+                <p>Secondary electrical bus fluctuation detected.</p>
+                <span class="system-state warning">INVESTIGATION REQUIRED</span>
+            </div>
+        </section>
+
+        
+        <!-- CREW INTERFACE -->
+        <section id="crew-screen" class="interface-panel hidden">
+
+            <div class="interface-header">
+        <span>CREW MONITORING // 001</span>
+        <button class="close-crew">BACK TO COCKPIT</button>
+            </div>
+
+            <h2>CREW STATUS</h2>
+
+            
+            <div class="systems-grid crew-grid">
+
+                <article class="system-card crew-card" data-crew="elena">
+                    <img src="assets/portraits/elena_voss.png" alt="Elena Voss">
+                    <h3>ELENA VOSS</h3>
+                    <p>COMMANDER</p>
+                    <strong class="crew-condition">STABLE</strong>
+                    <span class="system-state crew-stress">STRESS: 20%</span>
+                    <span class="system-state crew-trust">TRUST: 50%</span>
+                </article>
+
+                <article class="system-card crew-card" data-crew="marcus">
+                    <img src="assets/portraits/marcus_chen.png" alt="Marcus Chen">
+                    <h3>MARCUS CHEN</h3>
+                    <p>FLIGHT ENGINEER</p>
+                    <strong class="crew-condition">STABLE</strong>
+                    <span class="system-state crew-stress">STRESS: 35%</span>
+                    <span class="system-state crew-trust">TRUST: 50%</span>
+                </article>
+
+                <article class="system-card crew-card" data-crew="amara">
+                    <img src="assets/portraits/amara_okafor.png" alt="Amara Okafor">
+                    <h3>AMARA OKAFOR</h3>
+                    <p>SYSTEMS SCIENTIST</p>
+                    <strong class="crew-condition">STABLE</strong>
+                    <span class="system-state crew-stress">STRESS: 15%</span>
+                    <span class="system-state crew-trust">TRUST: 50%</span>
+                </article>
+
+                <article class="system-card crew-card" data-crew="daniel">
+                    <img src="assets/portraits/daniel_reyes.png" alt="Daniel Reyes">
+                    <h3>DANIEL REYES</h3>
+                    <p>MEDICAL OFFICER</p>
+                    <strong class="crew-condition">STABLE</strong>
+                    <span class="system-state crew-stress">STRESS: 10%</span>
+                    <span class="system-state crew-trust">TRUST: 50%</span>
+                </article>
+
+            </div>
+
+
+        </section>
+
+        <!-- CREW DECISION MODAL -->
+        <div id="crew-decision-modal" class="modal-overlay hidden">
+
+            <div class="modal-content crew-decision-content">
+
+                <div class="interface-header">
+                    <span>CREW INTERACTION // LUNAR-01</span>
+                    <span id="crewEventNumber">EVENT 001</span>
+                </div>
+
+                <h2 id="crewDecisionTitle">CREW RESPONSE</h2>
+
+                <div id="crewDialogueContainer"></div>
+
+                <div class="crew-choice-container">
+                    <p>COMMANDER RESPONSE</p>
+
+                    <button id="crewChoiceA" class="comm-response"></button>
+
+                    <button id="crewChoiceB" class="comm-response"></button>
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- CREW PROFILE MODAL -->
+        <div id="crew-profile-modal" class="hidden">
+            <div class="crew-profile-panel">
+
+             <button id="closeCrewProfile" class="close-interface">
+                    CLOSE ✕
+                </button>
+
+                <div class="crew-profile-content">
+                    <img id="profileImage" src="" alt="Crew member portrait">
+
+                    <div class="crew-profile-info">
+                        <span id="profileRole">CREW MEMBER</span>
+                        <h2 id="profileName">NAME</h2>
+
+                        <p id="profileNationality">Nationality</p>
+
+                        <div class="modal-section">
+                         <h3>PERSONAL RECORD</h3>
+                            <p id="profileBio"></p>
+                     </div>
+
+                        <div class="modal-section">
+                            <h3>EXPERTISE</h3>
+                            <p id="profileSkills"></p>
+                        </div>
+
+                        <div class="modal-section">
+                            <h3>PSYCHOLOGICAL STATUS</h3>
+                            <p id="profilePersonality"></p>
+                            <strong id="profileStress"></strong>
+                     </div>
+
+                        <div class="modal-section">
+                         <h3>MEDICAL STATUS</h3>
+                        <strong id="profileCondition"></strong>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- COMMUNICATIONS INTERFACE -->
+        <section id="communications-screen" class="interface-panel hidden">
+
+            <div class="interface-header">
+                <span>COMMUNICATIONS // LUNAR-01</span>
+                <button class="close-communications">BACK TO COCKPIT</button>
+            </div>
+
+            <h2>COMMUNICATIONS CENTER</h2>
+
+            <div class="communications-layout">
+
+                <aside class="communications-list">
+                    <h3>CHANNELS</h3>
+                    <button class="comm-channel active">GROUND CONTROL</button>
+                    <button class="comm-channel">CREW CHANNEL</button>
+                    <button class="comm-channel">AUTOMATED SYSTEM</button>
+                </aside>
+
+                <div class="communications-content">
+
+                    <div class="communications-header">
+                        <span>MISSION CONTROL // HOUSTON</span>
+                        <span>CHANNEL OPEN</span>
+                 </div>
+
+                    <div id="messageHistory" class="message-history">
+
+                     <article class="comm-message incoming">
+                            <span>GROUND CONTROL · 14:32:08</span>
+                            <p>Lunar-01, we detected an irregular fluctuation in your secondary electrical bus. Can you confirm your current power readings?</p>
+                        </article>
+
+                        <article class="comm-message incoming">
+                            <span>MARCUS CHEN · CREW CHANNEL</span>
+                            <p>I'm seeing inconsistent values in the electrical distribution panel. Something isn't adding up.</p>
+                        </article>
+
+                    </div>
+
+                    <div class="communication-input">
+                        <span>AWAITING COMMANDER RESPONSE</span>
+
+                        <button class="comm-response" data-response="readings">
+                            REPORT CURRENT READINGS
+                        </button>
+
+                     <button class="comm-response" data-response="investigate">
+                            REQUEST FURTHER INVESTIGATION
+                     </button>
+
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+
+        <!-- DIAGNOSTICS INTERFACE -->
+        <section id="diagnostics-screen" class="interface-panel hidden">
+
+            <div class="interface-header">
+                <span>SYSTEM DIAGNOSTICS // 001</span>
+                <button class="close-diagnostics">BACK TO COCKPIT</button>
+            </div>
+
+            <h2>ANOMALY INVESTIGATION</h2>
+
+            <div class="systems-grid">
+
+                <article class="system-card">
+                    <h3>PRIMARY POWER BUS</h3>
+                    <strong>NOMINAL</strong>
+                    <p>Primary electrical distribution operating within expected parameters.</p>
+                    <span class="system-state">STABLE</span>
+                </article>
+
+                <article class="system-card">
+                    <h3>SECONDARY POWER BUS</h3>
+                    <strong>FLUCTUATING</strong>
+                    <p>Unexpected voltage variations detected.</p>
+                    <span class="system-state warning">INVESTIGATION REQUIRED</span>
+                </article>
+
+                <article class="system-card">
+                    <h3>ENVIRONMENTAL SENSORS</h3>
+                    <strong>INCONSISTENT</strong>
+                    <p>Some telemetry readings do not match independent measurements.</p>
+                    <span class="system-state warning">VERIFY READINGS</span>
+                </article>
+
+                <article class="system-card">
+                    <h3>REDUNDANCY SYSTEM</h3>
+                    <strong>AVAILABLE</strong>
+                    <p>Backup electrical distribution remains operational.</p>
+                    <span class="system-state">STANDBY</span>
+                </article>
+
+            </div>
+
+            <div class="system-card">
+                <h3>DIAGNOSTIC ANALYSIS</h3>
+                <p id="diagnosticMessage">
+                    No complete diagnosis available. Further investigation is required.
+                </p>
+
+             <button id="runDiagnosticButton" class="comm-response">
+                    RUN SYSTEM ANALYSIS
+                </button>
+            </div>
+
+        </section>
+
+
+        <!-- MISSION LOGS -->
+        <section id="logs-screen" class="interface-panel hidden">
+
+            <div class="interface-header">
+                <span>MISSION RECORDS // 001</span>
+                <button class="close-logs">BACK TO COCKPIT</button>
+            </div>
+
+            <h2>MISSION EVENT LOG</h2>
+
+            <div class="system-card">
+             <div class="communications-header">
+                 <span>LUNAR-01 // FLIGHT RECORDER</span>
+                    <span id="logEntryCount">0 EVENTS</span>
+             </div>
+
+                <div id="missionLogList" class="mission-log-list">
+
+                    <article class="log-entry">
+                        <span>MISSION CONTROL</span>
+                        <p>Mission initialized. Lunar approach in progress.</p>
+                    </article>
+
+                    <article class="log-entry warning">
+                        <span>AUTOMATED SYSTEM</span>
+                        <p>Secondary electrical bus fluctuation detected.</p>
+                    </article>
+
+                </div>
+            </div>
+
+        </section>
+
+
+        <!-- 2D EXPLORATION -->
+        <section id="exploration-screen" class="hidden">
+
+            <div class="exploration-header">
+                <span>ENGINEERING // SECTOR A-02</span>
+                <span>INCIDENT 001: CASCADE</span>
+                <button id="exitExplorationButton">RETURN TO COCKPIT</button>
+            </div>
+
+            <div id="exploration-world">
+
+                <img
+                    class="exploration-background"
+                    src="assets/exploration/engineering-room.png"
+                    alt="Engineering room"
+                >
+
+                <img
+                    id="playerCharacter"
+                    src="assets/exploration/astronaut-idle.png"
+                    alt="Astronaut"
+                >
+
+                <div id="interactionPrompt" class="hidden">
+                    [ E ] INTERACT
+                </div>
+
+            </div>
+
+            <div class="exploration-footer">
+                <span>WASD / ARROW KEYS — MOVE</span>
+                <span> E — INTERACT</span>
+                <span id="explorationStatus">OBJECTIVE: LOCATE THE DAMAGED PANEL</span>
+            </div>
+
+
+        <!-- ELECTRICAL REPAIR INTERFACE -->
+        <div id="repair-modal" class="hidden">
+
+                <div class="repair-window">
+
+                <div class="interface-header">
+                    <span>ENGINEERING // REPAIR TERMINAL</span>
+                    <span>FAULT 001</span>
+                </div>
+
+                <h2>SECONDARY BUS REPAIR</h2>
+
+                <p id="repairDescription">
+                    Damaged connection detected. Follow the repair sequence.
+                </p>
+
+                <div class="repair-progress">
+                    <span id="repairStep">STEP 1 / 3</span>
+                    <div id="repairProgressBar">
+                        <div id="repairProgressFill"></div>
+                    </div>
+               </div>
+
+               <div class="repair-errors">
+                    <span>CRITICAL ERRORS</span>
+                    <div id="repairErrorIndicators">
+                        <span class="error-slot">○</span>
+                        <span class="error-slot">○</span>
+                        <span class="error-slot">○</span>
+                    </div>
+                    <span id="repairErrorCount">0 / 3</span>
+                </div>
+
+                <button id="completeMissionButton" class="hidden">
+                    COMPLETE MISSION
+                </button>
+
+                <div id="repairActions">
+
+                     <button class="repair-action" data-repair="isolate">
+                        01 — ISOLATE POWER
+                    </button>
+
+                    <button class="repair-action" data-repair="replace">
+                        02 — REPLACE DAMAGED CONNECTOR
+                    </button>
+
+                    <button class="repair-action" data-repair="restore">
+                        03 — RESTORE POWER
+                    </button>
+
+                </div>
+
+                <p id="repairFeedback"></p>
+
+                <button id="closeRepairButton">
+                    CLOSE TERMINAL
+                </button>
+
+            </div>
+
+        </div>
+
+
+        </section>
+
+        <!-- MISSION ENDING SCREEN -->
+        <section id="ending-screen" class="hidden">
+
+            <div class="ending-container">
+
+                <span class="ending-eyebrow">LUNAR-01 // MISSION DEBRIEF</span>
+
+                <div class="ending-divider"></div>
+
+                <p id="endingCode">INCIDENT 001: CASCADE</p>
+
+                <h1 id="endingTitle">MISSION RESULT</h1>
+
+                <h2 id="endingSubtitle">MISSION STATUS</h2>
+
+                <p id="endingDescription"></p>
+
+                <div class="ending-stats">
+                    <div>
+                        <span>POWER</span>
+                        <strong id="endingPower">--%</strong>
+                    </div>
+                    <div>
+                        <span>OXYGEN</span>
+                        <strong id="endingOxygen">--%</strong>
+                    </div>
+                    <div>
+                        <span>CREW STATUS</span>
+                        <strong id="endingCrew">--</strong>
+                    </div>
+                </div>
+
+                <div class="ending-divider"></div>
+
+                <p id="endingLastMessage"></p>
+
+             <button id="endingRestartButton">
+                    RETURN TO MAIN MENU
+                </button>
+
+                <span class="ending-footer">
+                     NO SIGNAL STUDIO // THE LAST TELEMETRY
+                </span>
+
+            </div>
+
+        </section>
+
+    </div>
+
+    <section id="credits-screen" class="hidden">
+
+            <div class="credits-container">
+
+                <div class="credits-brand">
+
+                <div class="credits-title">
+                    <h1>NO SIGNAL</h1>
+                    <span>( STUDIO )</span>
+                    <h2>THE LAST TELEMETRY</h2>
+                </div>
+
+                <img
+                    src="assets/background/icon-me.png"
+                    alt="NO SIGNAL studio icon"
+                    class="credits-icon"
+                >
+
+                </div>
+
+                <div class="credits-production">
+                    <span>PRODUCED BY</span>
+                    <h3>Milagros Galvan (Mir)</h3>
+                    <div class="credits-red-line"></div>
+                </div>
+
+                <p class="credits-footer">
+                    NO SIGNAL STUDIO // 2026
+                </p>
+
+                <button id="backFromCreditsButton" class="menu-button">
+                    RETURN
+                </button>
+
+            </div>
+
+    </section>
+
 
     <script src="js/gameState.js"></script>
     <script src="js/dialogue.js"></script>
